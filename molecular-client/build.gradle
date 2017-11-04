@@ -1,0 +1,37 @@
+apply from: "${scripts}/java_base.gradle"
+
+def run_main = "${group}.ClientLaunch"
+def run_args = ['--lvl', 'DEBUG', '--port', '25580']
+def run_dir = "${rootDir}/run/${name.replace('-', '_')}"
+
+dependencies {
+    compile project(':molecular-common')
+}
+
+task zipArtifacts(type: Zip, dependsOn: jar, group: 'artifacts') {
+    classifier = 'artifacts'
+    from jar
+    from file("${rootDir}/LICENCE")
+    from file("${rootDir}/README")
+}
+
+task run(type: JavaExec, dependsOn: classes, group: 'execution') {
+    doFirst { (run_dir as File).mkdirs() }
+    workingDir = run_dir as File
+    classpath = sourceSets.main.runtimeClasspath
+    main = run_main as String
+    args = run_args as List<String>
+}
+
+jar {
+    from configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }
+    manifest { attributes['Main-Class'] = run_main as String }
+}
+
+artifacts {
+    jar
+}
+
+clean {
+    (run_dir as File).delete()
+}

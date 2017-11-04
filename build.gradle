@@ -1,0 +1,24 @@
+allprojects {
+
+    ext {
+        scripts = file("${rootDir}/gradle/scripts/")
+    }
+
+    group 'org.molecular'
+    version '0.0.1'
+    description 'client-server-framework'
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+
+    apply plugin: "idea"
+
+    idea {
+        module {
+            downloadJavadoc = true
+            downloadSources = true
+        }
+    }
+}

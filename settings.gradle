@@ -1,0 +1,7 @@
+include 'molecular-api'
+include 'molecular-common'
+include 'molecular-server'
+include 'molecular-client'
+
+rootProject.name = 'molecular-project'
+

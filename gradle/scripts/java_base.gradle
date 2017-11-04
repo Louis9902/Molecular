@@ -1,0 +1,33 @@
+apply plugin: 'java'
+
+this.sourceCompatibility = JavaVersion.VERSION_1_8
+
+configurations {
+    plain
+}
+
+javadoc {
+    options.encoding = 'UTF-8'
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+jar {
+    manifest {
+        attributes['Name'] = "org/molecular"
+        attributes['Created-By'] = "${System.getProperty("java.version")} (${System.getProperty("java.vendor")})"
+
+        attributes['Specification-Title'] = "Molecular Application"
+        attributes['Specification-Version'] = "${version}"
+        attributes['Specification-Vendor'] = "Molecular Organisation"
+
+        attributes['Implementation-Title'] = "org.molecular"
+        attributes['Implementation-Version'] = "${computeVersion(version as String)}"
+        attributes['Implementation-Vendor'] = "Molecular Organisation"
+    }
+}
+
+static int computeVersion(String version) {
+    String[] tokens = version.tokenize('.')
+    assert tokens.length == 3
+    return ((byte) (tokens[0] as Byte) << 16) + ((byte) (tokens[1] as Byte) << 8) + (tokens[2] as Byte)
+}
